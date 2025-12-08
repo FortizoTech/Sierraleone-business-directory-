@@ -26,6 +26,15 @@ export interface AuditLog {
   actor: string;
 }
 
+export interface Transaction {
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+  type: 'CREDIT' | 'DEBIT';
+  category: string;
+}
+
 export interface AnnualReport {
   year: number;
   status: ReportStatus;
@@ -45,18 +54,24 @@ export interface Company {
   capital: number;
   address: string;
   website?: string; // New Website Field
+  businessLogo?: string;
   status: 'Active' | 'Liquidated' | 'Bankruptcy' | 'Inactive';
   reports: AnnualReport[];
   history: AuditLog[];
   
   // New Enhanced Fields
-  managementBoard: string[]; // Top Administrative Members
+  managementBoard: { name: string; position: string }[]; // Top Administrative Members
   contactEmail: string;
   contactPhone: string;
   beneficialOwners: string[];
-  taxDebt: number; // Amount in SLE, 0 means clean
+  taxDebt: number; // Amount in SLE, 0 means clean. Managed by Admin.
   commercialPledges: number; // Number of active pledges
   relationships: { entity: string; type: 'Subsidiary' | 'Parent' | 'Partner' | 'Shareholder' }[];
+  ownershipGraphUrl?: string; // Admin added photo of ownership graph
+  
+  // Business Portal Features
+  transactions: Transaction[];
+  isWebsitePublished: boolean;
 }
 
-export type ViewState = 'SEARCH' | 'COMPANY_DETAIL' | 'ADMIN_DASHBOARD' | 'USER_DASHBOARD' | 'NAME_CHECK' | 'OPEN_DATA';
+export type ViewState = 'SEARCH' | 'COMPANY_DETAIL' | 'ADMIN_DASHBOARD' | 'USER_DASHBOARD' | 'NAME_CHECK' | 'OPEN_DATA' | 'DUE_DILIGENCE' | 'GENERATED_WEBSITE';
